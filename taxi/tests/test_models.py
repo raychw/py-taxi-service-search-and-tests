@@ -29,7 +29,9 @@ class ModelsTest(TestCase):
 
     def test_driver_str_method(self):
         driver = Driver.objects.get(id=1)
-        expected_object_name = f"{driver.username} ({driver.first_name} {driver.last_name})"
+        expected_object_name = (f"{driver.username} "
+                                f"({driver.first_name} "
+                                f"{driver.last_name})")
         self.assertEqual(str(driver), expected_object_name)
 
     def test_car_str_method(self):
