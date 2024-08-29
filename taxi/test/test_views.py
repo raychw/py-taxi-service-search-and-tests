@@ -81,6 +81,29 @@ class ManufacturerListViewTest(BaseTestCase):
         )
         self.assertContains(response, "Subaru")
 
+    def setUp(self):
+        super().setUp()
+        Manufacturer.objects.create(name="Toyota")
+        Manufacturer.objects.create(name="Ford")
+        Manufacturer.objects.create(name="Tesla")
+
+    def test_search_returns_correct_results(self):
+        response = self.client.get(
+            reverse("taxi:manufacturer-list"),
+            {"name": "Ford"}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Ford")
+        self.assertNotContains(response, "Toyota")
+        self.assertNotContains(response, "Tesla")
+
+    def test_search_returns_all_if_no_query(self):
+        response = self.client.get(reverse("taxi:manufacturer-list"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Toyota")
+        self.assertContains(response, "Ford")
+        self.assertContains(response, "Tesla")
+
 
 class DriverListViewTest(BaseTestCase):
     def test_view_url_accessible_by_name(self):
