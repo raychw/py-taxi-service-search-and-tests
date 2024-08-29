@@ -5,6 +5,12 @@ from django.contrib.auth import get_user_model
 from taxi.models import Car, Driver, Manufacturer
 
 
+class LoginTestCase(TestCase):
+    def test_login_required(self):
+        res = self.client.get(reverse("taxi:index"))
+        self.assertNotEqual(res.status_code, 200)
+
+
 class BaseTestCase(TestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(

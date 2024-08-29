@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from taxi.models import Car, Driver, Manufacturer
@@ -38,3 +39,16 @@ class ModelsTest(TestCase):
         car = Car.objects.get(id=1)
         expected_object_name = f"{car.model}"
         self.assertEqual(str(car), expected_object_name)
+
+    def test_create_driver_with_license_number(self):
+        username = "qzish"
+        password = "test123"
+        license_number = "IO12211"
+        driver = get_user_model().objects.create_user(
+            username=username,
+            password=password,
+            license_number=license_number,
+        )
+        self.assertEqual(driver.username, username)
+        self.assertTrue(driver.check_password(password))
+        self.assertEqual(driver.license_number, license_number)
